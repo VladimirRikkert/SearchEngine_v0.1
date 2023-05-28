@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: Rikkert19980103
+    url: jdbc:mysql://localhost:3306/search_engine?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+indexing-settings:
+  sites:
+#    - url: https://lenta.ru
+#      name: Лента.ру
+#    - url: https://skillbox.ru
+#      name: Skillbox
+    - url: https://playback.ru
+      name: PlayBack.Ru
+    - url: https://ipfran.ru
+      name: IPFRAN
