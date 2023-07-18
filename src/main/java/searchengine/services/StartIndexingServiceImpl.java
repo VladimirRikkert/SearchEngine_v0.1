@@ -13,7 +13,9 @@ import searchengine.repositories.PageRepository;
 import searchengine.repositories.SiteRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 
 @Service
@@ -23,6 +25,7 @@ public class StartIndexingServiceImpl implements StartIndexingService {
     private final SitesList sites;
     private final PageRepository pageRepository;
     private final SiteRepository siteRepository;
+    private ArrayList<Thread> list = new ArrayList<>();
 
     @Override
     public StartIndexingResponse startIndexing() {
@@ -60,10 +63,10 @@ public class StartIndexingServiceImpl implements StartIndexingService {
 
     public void findPages(SitesList sites) {
         for (Site s : sites.getSites()) {
-            SiteCrawler site = new SiteCrawler(s.getUrl(), siteRepository, pageRepository, new ForkJoinPool());
-            site.run();
-
+            SiteCrawler site = new SiteCrawler(s.getUrl(), siteRepository, pageRepository, Executors.newFixedThreadPool(12));
+            Thread thread = new Thread(site);
+            list.add(thread);
         }
-
+        list.forEach(Thread::start);
     }
 }
